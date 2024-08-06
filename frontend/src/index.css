@@ -18,6 +18,19 @@ h1{
     padding: 0;
 }
 
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
 
 @media (min-width: 640px) {
     h1 {

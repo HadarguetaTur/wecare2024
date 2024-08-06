@@ -13,6 +13,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setCurrentUser(state, action) {
+      console.log(action,'state');
       state.user = action.payload;
       localStorage.setItem("currentUser", JSON.stringify(action.payload));
     },

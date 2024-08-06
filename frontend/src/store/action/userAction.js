@@ -6,13 +6,12 @@ export const updateDetails = createAsyncThunk(
     "user/updateMe",
     async (userDetails, { rejectWithValue, dispatch }) => {
       try {
+        console.log(userDetails);
         const response = await userService.updateUser(userDetails);
         console.log(response);
         if(response.status==="success"){
-          dispatch(setCurrentUser(response.data.user))
-    
+          dispatch(setCurrentUser(response.data.user))  
         }
-
         return response.data;
       } catch (err) {
         return rejectWithValue(err.response.data);

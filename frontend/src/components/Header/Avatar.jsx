@@ -22,9 +22,7 @@ export default function AvatarCom({ user }) {
         <div className="w-10 h-10 self-center curser-pointer">
           <img
             alt="user"
-            src={
-              "https://res.cloudinary.com/wecare-img/image/upload/v1722367497/avatar-icon_yzjyis.png"
-            }
+            src={user.photo}
             className="rounded-full w-full h-full"
           />
         </div>
