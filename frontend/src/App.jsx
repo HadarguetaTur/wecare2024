@@ -10,23 +10,25 @@ import { getUserByToken } from "./store/action/userAction";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import UserDashboard from "./pages/UserDashboard";
 import Spinner from "./components/General/spinner";
-
-
+import ArticlePage from "./pages/ArticlePage";
+import { fetchPosts } from "./store/action/postAction";
+import ArticlesPage from "./pages/ArticlesPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PaddingContainer/>,
+    element: <PaddingContainer />,
     errorElement: <ErrorPage />,
     children: [
       { path: "/", element: <HomePage /> },
+      { path: "/articles", element: <ArticlesPage /> },
       { path: "/auth", element: <AuthPage />, action: authAction },
+      { path: "//post/:postSlug", element: <ArticlePage /> },
       {
         path: "/dashboard",
         element: <PrivateRoute />,
         children: [{ path: "/dashboard", element: <UserDashboard /> }],
       },
-
     ],
   },
 ]);
@@ -41,8 +43,17 @@ function App() {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    try {
+      const res = dispatch(fetchPosts()).unwrap();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [dispatch]);
+
   if (loading) {
-    return <Spinner/>; 
+    return <Spinner />;
   }
 
   return <RouterProvider router={router} />;

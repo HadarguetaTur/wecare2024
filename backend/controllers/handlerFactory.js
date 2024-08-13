@@ -18,10 +18,15 @@ exports.deleteOne = Model =>
 
 exports.updateOne = Model =>
   catchAsync(async (req, res, next) => {
+    console.log(req.file);
+    if (req.file) req.body.photo = req.file.filename;
+
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
     });
+
+    console.log(doc);
 
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
@@ -37,6 +42,10 @@ exports.updateOne = Model =>
 
 exports.createOne = Model =>
   catchAsync(async (req, res, next) => {
+    console.log(req.body);
+    if (req.file) req.body.photo = req.file.filename;
+    console.log('line 40 create post',req.body);
+  
     const doc = await Model.create(req.body);
 
     res.status(201).json({
@@ -65,23 +74,28 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = Model =>
-  catchAsync(async (req, res, next) => {
-    let filter = {};
-    if (req.params.tourId) filter = { tour: req.params.tourId };
-
-    const features = new APIFeatures(Model.find(filter), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const doc = await features.query;
-
-    res.status(200).json({
-      status: 'success',
-      results: doc.length,
-      data: {
-        data: doc
+  exports.getAll = (Model) =>
+    catchAsync(async (req, res, next) => {
+      let filter = {};
+      if (req.query.category) {
+        filter.category = req.query.category;
       }
+      if (req.params.userId) {
+        filter.post = req.params.postId;
+      }
+      const features = new APIFeatures(Model.find(filter), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+      const doc = await features.query;
+      console.log(doc);
+  
+      res.status(200).json({
+        status: 'success',
+        results: doc.length,
+        data: {
+          data: doc,
+        },
+      });
     });
-  });

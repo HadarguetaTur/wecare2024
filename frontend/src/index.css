@@ -12,10 +12,19 @@ body{
 }
 
 h1{
-    white-space: nowrap;
+    white-space: wrap;
     font-size: 0.875rem; 
     font-weight: 600; 
     padding: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; 
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
 }
 
 @keyframes bounce {

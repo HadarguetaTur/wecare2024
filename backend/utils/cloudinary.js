@@ -7,10 +7,6 @@ cloudinary.config({
 });
 
 const uploads = async (file, public_id, overwrite, invalidate) => {
-  console.log(`Uploading file: ${file}`);
-  console.log(`Public ID: ${public_id}`);
-  console.log(`Overwrite: ${overwrite}`);
-  console.log(`Invalidate: ${invalidate}`);
   try {
     const timestamp = Math.round(new Date().getTime() / 1000);
     const signature = cloudinary.utils.api_sign_request(
@@ -32,7 +28,6 @@ const uploads = async (file, public_id, overwrite, invalidate) => {
       api_key: process.env.CLOUD_API_KEY,
     });
 
-    console.log(uploadResult);
     return uploadResult;
   } catch (error) {
     console.error("Error during upload:", error);

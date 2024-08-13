@@ -30,10 +30,8 @@ const processImage = async (req, res, next) => {
     const invalidate = true;
 
     const result = await uploads(tempFilePath, public_id, overwrite, invalidate);
-    console.log("Upload result:", result);
 
     req.file.filename = result.secure_url;
-    console.log(result.secure_url);
     next();
   } catch (err) {
     console.log(err);

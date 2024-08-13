@@ -1,5 +1,5 @@
 import { Button, Sidebar } from "flowbite-react";
-import { HiArrowCircleRight, HiUser } from "react-icons/hi";
+import { HiArrowCircleRight, HiUser ,HiDocumentText} from "react-icons/hi";
 import PropTypes from "prop-types";
 
 export default function DashSidebar({ tab }) {
@@ -13,6 +13,13 @@ export default function DashSidebar({ tab }) {
             active={tab === "profile"}
           >
             Profile
+          </Sidebar.Item>
+          <Sidebar.Item
+            href="/dashboard?tab=posts"
+            icon={HiDocumentText}
+            active={tab === "posts"}
+          >
+            Posts
           </Sidebar.Item>
 
           <Button

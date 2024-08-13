@@ -7,9 +7,10 @@ import { Link } from "react-router-dom";
 import { FaMoon } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
+
 function Header() {
   const { user } = useSelector((state) => state.user);
-  console.log(user);
+
 
   return (
     <div className="border-b border-teal-500">
@@ -36,6 +37,7 @@ function Header() {
         </div>
         <NavigationMenu />
       </Navbar>
+
     </div>
   );
 }
