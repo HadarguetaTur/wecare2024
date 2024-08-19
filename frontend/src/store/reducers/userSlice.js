@@ -1,8 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUserByToken } from "../action/userAction";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { fetchUsers, getUserByToken } from "../action/userAction";
+
 
 const initialState = {
   user: null,
+  users: [],
+  filteredUsers: [], 
+  selectedCategory: 'all',
   loading: false,
   error: null,
   status: null,
@@ -12,6 +16,12 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    setSelectedUserCategory: (state, action) => { 
+      state.selectedCategory = action.payload;
+      state.filteredUsers = state.selectedCategory === 'all'
+        ? state.users
+        : state.users.filter(user => user.category === state.selectedCategory);
+    },
     setCurrentUser(state, action) {
       state.user = action.payload;
       localStorage.setItem("currentUser", JSON.stringify(action.payload));
@@ -65,10 +75,44 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       });
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log(action);
+        state.users = action.payload.users;
+        state.filteredUsers =  
+          state.selectedCategory === "all"
+            ? state.users
+            : state.users.filter(
+                (user) => user.category === state.selectedCategory
+              );
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 
+
+export const selectUserById = (state, id) => {
+  return state.user.users.find(user => user.id === id);
+}
+
+
+
+export const selectUserByCategory = createSelector(
+  [state => state.user.filteredUsers, (_, category) => category],
+  (filteredUsers, category) => {
+    return filteredUsers.filter(user => user.isCareProvider === true && user.category === category);
+  }
+);
+
 export const {
+  setSelectedUserCategory,  
   setCurrentUser,
   updateStart,
   updateSuccess,
@@ -78,4 +122,5 @@ export const {
   deleteUserFailure,
   signoutSuccess,
 } = userSlice.actions;
+
 export default userSlice.reducer;

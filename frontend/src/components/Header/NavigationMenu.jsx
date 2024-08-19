@@ -5,7 +5,7 @@ function NavigationMenu() {
     <Navbar.Collapse>
       <Navbar.Link href="/">Home</Navbar.Link>
       <Navbar.Link href="/articles">Articles</Navbar.Link>
-      <Navbar.Link href="/articles">Terapists</Navbar.Link>
+      <Navbar.Link href="/terapists">Terapists</Navbar.Link>
     </Navbar.Collapse>
   );
 }

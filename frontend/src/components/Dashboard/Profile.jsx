@@ -1,4 +1,11 @@
-import { Alert, Button, Modal, TextInput } from "flowbite-react";
+import {
+  Alert,
+  Button,
+  Modal,
+  TextInput,
+  Textarea,
+  Select,
+} from "flowbite-react";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,10 +13,10 @@ import {
   updateStart,
   updateSuccess,
 } from "../../store/reducers/userSlice";
-import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { logout } from "../../store/action/authAction";
 import { deleteUser, updateDetails } from "../../store/action/userAction";
+import categories from "../../utils/staticData";
 
 export default function Profile() {
   const { user, error, loading } = useSelector((state) => state.user);
@@ -22,6 +29,8 @@ export default function Profile() {
     _id: user._id,
     username: user.username,
     email: user.email,
+    description: user.description || "",
+    category: user.category || "",
   });
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
@@ -53,6 +62,7 @@ export default function Profile() {
   const handleSignout = () => {
     dispatch(logout());
   };
+
   const handleUpdateDetails = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
@@ -96,7 +106,7 @@ export default function Profile() {
           ref={fileInputRef}
         />
         <div
-          className="w-32 h-32 self-center curser-pointer"
+          className="w-32 h-32 self-center cursor-pointer"
           onClick={handleImageClick}
         >
           <img
@@ -119,21 +129,29 @@ export default function Profile() {
           defaultValue={user.email}
           onChange={handleChange}
         />
+
+        {/* Show additional fields if user is a care provider */}
+        {user.isCareProvider && (
+          <>
+            <Textarea
+              id="description"
+              placeholder="description"
+              defaultValue={user.description}
+              onChange={handleChange}
+            />
+            <Select onChange={handleChange} id="category">
+              {categories.map((category) => (
+                <option key={category.value} value={category.value}>
+                  {category.label}
+                </option>
+              ))}
+            </Select>
+          </>
+        )}
+
         <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
           {loading ? "Loading..." : "Update"}
         </Button>
-        {user.isAdmin && (
-          <Link to={"/create-post"}>
-            <Button
-              type="button"
-              gradientDuoTone="purpleToPink"
-              className="w-full"
-            >
-              Create a post
-            </Button>
-          </Link>
-        )}
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">

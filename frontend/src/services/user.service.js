@@ -9,14 +9,15 @@ export const userService = {
 }
 const withToken= true
 
-async function getUsers(num) {
-  try {
-    const users = await httpService.get(`user`)
-    return users[num]
-  } catch (err) {
-    console.log("Cannot Get users from service", err)
-    throw err
+async function getUsers(filterBy, element) {
+  console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+  let url = "users/getusers";
+  if (filterBy && element) {
+    url += `/?${filterBy}=${element}`;
   }
+  const response = await httpService.get(url);
+  console.log(response);
+  return response;
 }
 
 async function getUserById(userId) {

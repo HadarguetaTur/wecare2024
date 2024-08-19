@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import AuthForm from "../components/Auth/AuthForm";
 import { resetPassword, signin, signup } from "../store/action/authAction";
 
-
 function AuthPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,14 +58,21 @@ export async function action({ request }) {
     authData = {
       email: data.get("email"),
       password: data.get("password"),
+      isCareProvider: data.get("isCareProvider") === "on",
       username: data.get("username"),
       passwordConfirm: data.get("passwordConfirm"),
     };
+    if (authData.isCareProvider) {
+      authData.description = data.get("description");
+      authData.category = data.get("category");
+    }
   } else if (mode === "reset") {
     authData = {
       email: data.get("email"),
     };
   }
+
+  console.log(authData);
 
   return { authData, mode };
 }

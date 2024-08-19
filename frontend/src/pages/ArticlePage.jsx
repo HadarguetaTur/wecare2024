@@ -15,10 +15,9 @@ function ArticlePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Fetch the post from Redux store
   const post = useSelector((state) => selectPostBySlug(state, postSlug));
   const recentPosts = useSelector((state) =>
-    selectPostsByCategory(state, post?.category)
+    selectPostsByCategory(state, post?.category).slice(0, 4) 
   );
 
   const fetchPost = useCallback(() => {

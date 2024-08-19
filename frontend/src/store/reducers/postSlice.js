@@ -42,6 +42,9 @@ export const { setSelectedPostCategory } = postsSlice.actions;
 export const selectPostBySlug = (state, slug) => {
   return state.posts.posts.find(post => post.slug === slug);
 }
+export const selectPostById = (state, id) => {
+  return state.posts.posts.filter(post => post.id === id);
+}
 
 export const selectPostsByCategory = (state) => {
   console.log(state);

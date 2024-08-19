@@ -36,13 +36,17 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { username, email, password, passwordConfirm } = req.body;
-  
+  const { username, email, password, passwordConfirm, isCareProvider, category, description } = req.body;
+
+  // Create a newUser object
   const newUser = await User.create({
     username,
     email,
     password,
     passwordConfirm,
+    isCareProvider,
+    category: isCareProvider ? category : undefined,  // Only include if isCareProvider is true
+    description: isCareProvider ? description : undefined  // Only include if isCareProvider is true
   });
 
   console.log('new user', newUser);

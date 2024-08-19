@@ -6,13 +6,15 @@ import HomePage from "./pages/HomePage";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAuthToken } from "./utils/auth";
-import { getUserByToken } from "./store/action/userAction";
+import { fetchUsers, getUserByToken } from "./store/action/userAction";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import UserDashboard from "./pages/UserDashboard";
 import Spinner from "./components/General/spinner";
 import ArticlePage from "./pages/ArticlePage";
-import { fetchPosts } from "./store/action/postAction";
 import ArticlesPage from "./pages/ArticlesPage";
+import { fetchPosts } from "./store/action/postAction";
+import TerapistsPage from "./pages/TerapistsPage";
+import DisplayProfile from "./pages/DisplayProfile";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/articles", element: <ArticlesPage /> },
+      { path: "/terapists", element: <TerapistsPage /> },
       { path: "/auth", element: <AuthPage />, action: authAction },
       { path: "//post/:postSlug", element: <ArticlePage /> },
       {
@@ -29,6 +32,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [{ path: "/dashboard", element: <UserDashboard /> }],
       },
+      { path: "/therapist/:id", element: <DisplayProfile /> }, 
     ],
   },
 ]);
@@ -45,8 +49,9 @@ function App() {
 
   useEffect(() => {
     try {
-      const res = dispatch(fetchPosts()).unwrap();
-      console.log(res);
+      const resUsers = dispatch(fetchUsers());
+      const resPosts = dispatch(fetchPosts());
+      console.log(resUsers,resPosts);
     } catch (error) {
       console.log(error);
     }

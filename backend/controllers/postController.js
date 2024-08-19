@@ -113,7 +113,6 @@ exports.getposts = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo },
     });
 
-    console.log("succses",posts);
 
     res.status(200).json({
       posts,

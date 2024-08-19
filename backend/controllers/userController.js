@@ -67,6 +67,48 @@ exports.getUserByToken = catchAsync(async (req, res, next) => {
   return getOne(User)(req, res, next);
 });
 
+
+exports.getusers = async (req, res, next) => {
+  console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 20;
+    const sortDirection = req.query.order === 'asc' ? 1 : -1;
+    const users = await User.find({
+      ...(req.query.isCareProvider && { isCareProvider: req.query.isCareProvider }),
+      ...(req.query.category && { category: req.query.category }),
+   
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalUsers= await User.countDocuments();
+
+    const now = new Date();
+
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUsers = await User.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    console.log("succses",users);
+
+    res.status(200).json({
+      users,
+      totalUsers,
+      lastMonthUsers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getUser = getOne(User);
 exports.getAllUsers = getAll(User);
 exports.updateUser = updateOne(User);
