@@ -1,7 +1,6 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
 import { useRef, useState } from "react";
 import ReactQuill from "react-quill";
-import slugify from "slugify";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,12 +13,11 @@ export default function CreatePost() {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [formData, setFormData] = useState({
     userId: user._id,
-    userName:user.username,
+    userName: user.username,
     title: "",
     category: "",
     content: "",
     photo: "",
-    slug: "",
   });
   const [publishError, setPublishError] = useState(null);
 
@@ -41,10 +39,6 @@ export default function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const slug = await slugify(formData.title);
-    setFormData({ ...formData, slug: slug });
-    console.log(formData);
 
     const fd = new FormData();
     for (const key in formData) {

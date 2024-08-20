@@ -47,7 +47,6 @@ export const selectPostById = (state, id) => {
 }
 
 export const selectPostsByCategory = (state) => {
-  console.log(state);
   return state.posts.filteredPosts;
 }
 

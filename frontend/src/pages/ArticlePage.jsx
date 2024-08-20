@@ -9,6 +9,7 @@ import {
   selectPostBySlug,
   selectPostsByCategory,
 } from "../store/reducers/postSlice.js";
+import CommentSection from "../components/Article/comment/CommentSection.jsx";
 
 function ArticlePage() {
   const { postSlug } = useParams();
@@ -93,6 +94,7 @@ function ArticlePage() {
           ))}
         </div>
       </div>
+      <CommentSection  postID={post._id}/>
     </main>
   );
 }

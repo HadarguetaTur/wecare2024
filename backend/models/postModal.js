@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.ObjectId, 
+      ref: 'User',
       required: true,
     },
-    username:{
+    username: {
       type: String,
-      require:true
+      required: true,
     },
     content: {
       type: String,
@@ -33,13 +34,30 @@ const postSchema = new mongoose.Schema(
     },
     views: {
       type: Number,
-      default: 0, 
+      default: 0,
+    },
+    ratingsAverage: {
+      type: Number,
+      default: 4.5,
+      min: [1, 'Rating must be above 1.0'],
+      max: [5, 'Rating must be below 5.0'],
+      set: val => Math.round(val * 10) / 10
+    },
+    ratingsQuantity: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
 );
 
-const Post = mongoose.model('Post', postSchema);
+postSchema.pre('save', function(next) {
+  if (!this.slug) {
+    this.slug = this.title.toLowerCase().replace(/ /g, '-');
+  }
+  next();
+});
 
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

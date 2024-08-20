@@ -81,8 +81,9 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log(action);
-        state.users = action.payload.users;
+     
+        state.user.users = action.payload;
+        console.log(state.user.users);
         state.filteredUsers =  
           state.selectedCategory === "all"
             ? state.users
@@ -99,8 +100,8 @@ const userSlice = createSlice({
 
 
 export const selectUserById = (state, id) => {
-  return state.user.users.find(user => user.id === id);
-}
+  return state.user.users.find(user => user._id === id);
+};
 
 
 

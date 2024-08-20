@@ -46,11 +46,10 @@ export const updateDetails = createAsyncThunk(
   export const fetchUsers = createAsyncThunk(
     "posts/fetchUsers",
     async ({filterBy = null, element = null} = {}, { rejectWithValue }) => {
-      console.log('here');
       try {
         const response = await userService.getUsers(filterBy, element);
         console.log(response);
-        return response;
+        return response.users;
       } catch (error) {
         return rejectWithValue(error.response.data);
       }
